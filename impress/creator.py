@@ -1,5 +1,9 @@
 import random
 from math import sqrt
+import os
+
+FOLDER = os.path.split(__file__)[0]
+p = lambda s: os.path.join(FOLDER, s)
 
 class ImpressCreator(object):
 
@@ -46,7 +50,7 @@ class ImpressCreator(object):
         slide_text += opening_div
         slide_text += self.process_text(desc.get("text"))
         
-        imgs = desc.get("img_list")
+        imgs = desc.get("images")
         for img in imgs:
             slide_text += ("<img width='100%' src='" + img + "'/>")
         
@@ -57,8 +61,13 @@ class ImpressCreator(object):
         with open(filename, "w") as text_file:
             text_file.write(text)
         
-    def create_presentation(self, descs):
-        with open("page_template.html") as f:
+    def create_presentation(self, data):
+        print("----")
+        print(data)
+        print("----")
+        
+        descs = data['slides']
+        with open(p("page_template.html")) as f:
             page_template = f.readlines()
             page_template = "".join(page_template)
             
@@ -109,15 +118,22 @@ class ImpressCreator(object):
         css_text += "\n"
         
         self.save_file(css_text, "style.css")
-
+        
+def generate(data):
+    ic = ImpressCreator()
+    ic.create_presentation(data)
+    ic.create_css()
+    
 if __name__ == "__main__":
     descs = [
-        {"text": "my first slide", "img_list": ["a.jpg"]},
-        {"text": "my second slide", "img_list": ["b.jpg"]},
-        {"text": "my third slide", "img_list": ["c.jpg"]},
-        {"text": "my fourth slide", "img_list": ["d.jpg"]}]
+        {"text": "my first slide", "images": ["a.jpg"]},
+        {"text": "my second slide", "images": ["b.jpg"]},
+        {"text": "my third slide", "images": ["c.jpg"]},
+        {"text": "my fourth slide", "images": ["d.jpg"]}]
+        
+    data = {'slides': descs}
     
     ic = ImpressCreator()
-    ic.create_presentation(descs)
+    ic.create_presentation(data)
     ic.create_css()
     

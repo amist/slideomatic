@@ -5,13 +5,15 @@ Created on Jun 17, 2015
 '''
 #import ppt_backend
 from img_fetcher import get_pics, delete_image_folder
+import impress.creator
 import logging
 import wiki_sentence_generator
 
 log = logging.getLogger("core")
 
 BACKENDS = {
-            'pttx': lambda data: 0#ppt_backend.make_presentation
+            'pttx': lambda data: 0,#ppt_backend.make_presentation
+            'impress': impress.creator.generate
             }
 
 def generate(title, author, paragraghs, backend='pttx'):
