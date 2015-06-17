@@ -17,7 +17,7 @@ def fetch_quotes_from_quotationspage(subject):
 
 def fetch_quotes(subject):
     qs = fetch_quotes_from_quotationspage(subject)
-    print_quotes(qs)
+    return qs
     
 def print_quotes(qs):
     for q in qs:
@@ -39,4 +39,14 @@ if __name__ == "__main__":
     #subject = "failure"
     #subject = "nature"
     #subject = "parents"
-    fetch_quotes(subject)
+    print("Using the subject: %s" % subject)
+    qs = fetch_quotes(subject)
+    if len(qs) == 0:
+        if index == 0 and len(words > 1):
+            index = 1
+        if index == 1:
+            index = 0
+        subject = words[index]
+        print("Using the subject: %s" % subject)
+        qs = fetch_quotes(subject)
+    print_quotes(qs)
