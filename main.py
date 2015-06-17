@@ -11,11 +11,15 @@ def inp(s):
     a = ''
     while not a.strip():
         a = input(s)
+        with open('lastrun', 'a') as f:
+            f.write(a)
     return a.strip()
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     print("Welcome!\n")
+    with open('lastrun' ,'wb'): 
+        pass
     title = inp("Title:\n")
     
     author = inp("Author:\n")

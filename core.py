@@ -8,6 +8,7 @@ from img_fetcher import get_pics, delete_image_folder
 import impress.creator
 import logging
 import wiki_sentence_generator
+from quotes_fetcher import fetch_quote
 
 log = logging.getLogger("core")
 
@@ -35,11 +36,12 @@ def generate(title, author, paragraghs, backend='pttx'):
     
     for para in paragraghs:
         buzz = wiki_sentence_generator.random_wiki_sentence(para)
+        quote = fetch_quote(para)
         imgs = get_pics(para.replace('\n', ' '))
         slides.append({
                        "text": para,
                        "images": imgs,
-                       "quote": None,
+                       "quote": quote,
                        "buzz": buzz,
                        })
     log.debug("sending %s to %s" % (data, backend))

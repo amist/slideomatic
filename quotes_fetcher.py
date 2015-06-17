@@ -51,18 +51,18 @@ class QuotesFetcher(object):
         #    print(q)
         return qs[0]
         
-    def print_quotes(qs):
-        for q in qs:
-            try:
-                print(q)
-            except UnicodeEncodeError:
-                print("<<< QUOTE WITH UnicodeEncodeError >>>")
+
+
+def fetch_quote(sentence):
+    qf = QuotesFetcher()
+    qs = qf.fetch_quotes_out_of_sentence(sentence)
+    return qf.pick_one_quote(qs)
 
 if __name__ == "__main__":
-    qf = QuotesFetcher()
+    
     sentence = "How to learn from your mistakes"
-    sentence = "Inspiration is your target"
-    qs = qf.fetch_quotes_out_of_sentence(sentence)
-    q = qf.pick_one_quote(qs)
+    #sentence = "Inspiration is your target"
+    
+    q = fetch_quote(sentence)
     print(q)
     #print_quotes(qs)
