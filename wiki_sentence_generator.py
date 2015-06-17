@@ -48,14 +48,15 @@ def get_wiki_summary(phrase):
     
 def random_wiki_sentence(phrase):
     summ = get_wiki_summary(phrase)
-    
-    #print("opts = " + format(str(opts)) + "\n")
-    #for i in opts:        
-    #    if i and random.random() < 0.3:
-    #        return i
     log.debug("\n\nsumm=%s\n\n", summ)
     
-    return random.choice(summ)
+    #print("opts = " + format(str(opts)) + "\n")
+    for i in summ:        
+        if i and random.random() < 0.5:
+            return i
+    return summ[0]
+
+    #return random.choice(summ)
 
 if __name__ == '__main__':
     logging.basicConfig(level=0)

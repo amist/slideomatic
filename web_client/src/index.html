@@ -1,31 +1,48 @@
 <!DOCTYPE html>
 <html ng-app ="myApp">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
 <Script Type="Text/Javascript" src="../lib/angular.js"></Script>
 <Script Type="Text/Javascript" src="app.js"></Script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
 </head>
 <body ng-controller="myController">
+<div class="jumbotron">
+
 <h1>slideomatic</h1>
-<h2>enter your input</h2>
-                      <div ng-repeat="s in slides" style="border:1px solid black">
+<h2>Insert slides data</h2>
+
+    <div  class="row" style="border:1px solid black">
+        <h3>Presentaion title</h3>
+        <textarea rows ="2" cols = "50" ng_model ="title"></textarea>
+    </div>
+<br>
+
+
+    <div  class="row" ng-repeat="s in slides" style="border:1px solid black">
                           <h3>slide #{{slides.indexOf(s) +1 }}</h3>
-                          title:   <input width="100%" ng_model = "s.title"/>
-                          <div >
+                           <div  class  ="row">
                               <br>
-                          content: <textarea rows="5" cols="50" ng-model = "s.content"></textarea>
-                          <button ng-click="add_slide()">add slide</button>
-                              <button ng-click="remove_slide(slides.indexOf(s))">X</button>
+                           <textarea rows="5" cols="50" ng-model = "s.content"></textarea>
+                              <button  type="button" class="btn btn-default" ng-click="remove_slide(slides.indexOf(s))">X</button>
 
                           </div>
                       </div>
-
-
 <br>
-<div>
-<button ng-click="apply()">apply</button>
-    </div>
+
+</div>
+
+<div class="container">
+    <button type="button" class="btn btn-default" ng-click="add_slide()">add slide</button>
+    <button type="button" class="btn btn-info" ng-click="apply()">Create Slides</button>
+</div>
+
 </body>
 </html>
