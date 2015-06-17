@@ -16,7 +16,7 @@ class ImpressCreator(object):
             pu_x = pu.get("x")
             pu_y = pu.get("y")
             pu_s = pu.get("scale")
-            if sqrt((pu_x - x)**2 + (pu_y - y)**2) < (1000 * pu_s):
+            if sqrt((pu_x - x)**2 + (pu_y - y)**2) < (1500 * pu_s) or sqrt((pu_x - x)**2 + (pu_y - y)**2) < (1500 * scale):
                 return False
         return True
         
@@ -49,7 +49,48 @@ class ImpressCreator(object):
         slide_text += "<h1>" + desc['title'] + "</h1>"
         slide_text += "<h4>" + desc['author'] + "</h4>"
         slide_text += "</div>"
+        self.params_used.append({"x": 0, "y": 0, "scale": 1, "rotate": 0})
         return slide_text
+        
+    def create_img_elements(self, imgs, text_up):
+        imgs_text = ""
+        max_imgs_num = random.randint(2, 3)
+        imgs_num = min(len(imgs), max_imgs_num)
+        if imgs_num == 1:
+            img_width = 70
+        else:
+            img_width = 100 / sqrt(imgs_num)
+        i = 0
+        left_before_right = random.randint(0, 1) == 0
+        for img in imgs:
+            t = 0
+            l = 0
+            if i >= imgs_num:
+                break
+            upper_bound = max(int(300 - 100 * img_width / 25), 1)
+            if text_up:
+                t = random.randint(0, 100)
+            else:
+                t = random.randint(-400, -200)
+            if imgs_num == 1 or imgs_num == 3:
+                if i == 0:
+                    l = 10
+                if i == 1 and left_before_right or i == 2 and not left_before_right:
+                    l = -30 - random.randint(1, 10)
+                if i == 2 and left_before_right or i == 1 and not left_before_right:
+                    l = 67 + random.randint(1, 15)
+            else: # imgs_num == 2:
+                if i == 0 and left_before_right or i == 1 and not left_before_right:
+                    l = -25 - random.randint(1, 10)
+                if i == 1 and left_before_right or i == 0 and not left_before_right:
+                    l = 45 + random.randint(1, 15)
+            i += 1
+            img_tag = ("<img width='%d%%' style='position: fixed; top: %d%%; left: %d%%;' src='" + img + "'/>") % (img_width, t, l)
+            imgs_text += img_tag
+            img_width /= 1.5
+            if img_width < 20:
+                break
+        return imgs_text
 
     def create_slide(self, desc, i):
         slide_text = ""
@@ -57,11 +98,21 @@ class ImpressCreator(object):
         
         opening_div = "<div class='step' data-x='%d' data-y='%d' data-scale='%d' data-rotate='%d'>" % (x, y, scale, rotate)
         slide_text += opening_div
-        slide_text += self.process_text(desc.get("text"))
         
         imgs = desc.get("images")
-        for img in imgs:
-            slide_text += ("<img width='100%' src='" + img + "'/>")
+        text_up = random.randint(0, 2) == 0
+        #print("text up" if text_up else "text down")
+        slide_text += self.create_img_elements(imgs, text_up)
+        
+        if text_up:
+            slide_text += "<div style='position: fixed; top: -200px; left: 0px;'>"
+        else:
+            slide_text += "<div style='position: fixed; top: 200px; left: 0px;'>"
+        slide_text += self.process_text(desc.get("text"))
+        slide_text += "</div>"
+        
+        #for img in imgs:
+        #    slide_text += ("<img width='100%' src='" + img + "'/>")
         
         slide_text += "</div>"
         return slide_text
@@ -71,9 +122,9 @@ class ImpressCreator(object):
             text_file.write(text)
         
     def create_presentation(self, data):
-        print("----")
-        print(data)
-        print("----")
+        #print("----")
+        #print(data)
+        #print("----")
         
         descs = data['slides']
         with open(p("page_template.html")) as f:
@@ -141,8 +192,8 @@ def generate(data):
 if __name__ == "__main__":
     descs = [
         {"text": "my first slide", "images": ["a.jpg"]},
-        {"text": "my second slide", "images": ["b.jpg"]},
-        {"text": "my third slide", "images": ["c.jpg"]},
+        {"text": "my second slide", "images": ["a.jpg", "b.jpg"]},
+        {"text": "my third slide", "images": ["a.jpg", "b.jpg", "c.jpg"]},
         {"text": "my fourth slide", "images": ["d.jpg"]}]
     
     first = {'title': 'My Title', 'image': 'a.jpg', 'author': 'John Smith'}
