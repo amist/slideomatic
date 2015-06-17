@@ -1,8 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup         # pip install beautifulsoup4
 
-#base_url_1 = "http://www.brainyquote.com/quotes/topics/topic_%s.html"      # forbidden
-
 def fetch_quotes_from_quotationspage(subject):
     url = "http://www.quotationspage.com/subjects/%s" % subject
     f = urllib.request.urlopen(url)
@@ -19,8 +17,13 @@ def fetch_quotes_from_quotationspage(subject):
 def fetch_quotes(subject):
     qs = fetch_quotes_from_quotationspage(subject)
     for q in qs:
-        print(q)
+        try:
+            print(q)
+        except UnicodeEncodeError:
+            print("<<< QUOTE WITH UnicodeEncodeError >>>")
 
 if __name__ == "__main__":
-    subject = "failure"
+    #subject = "failure"
+    #subject = "nature"
+    subject = "parents"
     fetch_quotes(subject)
