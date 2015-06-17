@@ -1,9 +1,12 @@
 import random
+import cgi
 from math import sqrt
 import os
+import logging
 
 FOLDER = os.path.split(__file__)[0]
 p = lambda s: os.path.join(FOLDER, s)
+log = logging.getLogger("impress")
 
 class ImpressCreator(object):
 
@@ -34,8 +37,10 @@ class ImpressCreator(object):
             return [x, y, scale, rotate]
             
     def process_text(self, text):
+        text = cgi.escape(text)
+        text = text.replace('\n', ' <br/> ')
         words = text.split(" ")
-        words = ["<span class='rand_rotate'>" + word + "</span>" if random.randint(0, 4) == 1 else word for word in words]
+        words = ["<span class='rand_rotate'>" + word + "</span>" if random.randint(0, 8) == 1 else word for word in words]
         #for word in words:
         #    if random.randint(0, 4) == 1:
         #        word = "<span class='rand_rotate'>" + word + "</span>"
@@ -96,6 +101,7 @@ class ImpressCreator(object):
         return imgs_text
 
     def create_slide(self, desc, i):
+        buzz = desc.get('buzz')
         slide_text = ""
         [x, y, scale, rotate] = self.get_random_vars(i)
         
@@ -114,10 +120,23 @@ class ImpressCreator(object):
         slide_text += self.process_text(desc.get("text"))
         slide_text += "</div>"
         
+        #print(desc)
+        if buzz is not None and buzz != "":
+            buzz_text = ""
+            if text_up:
+                buzz_text += "<div style='position: fixed; bottom: 0px;' class='buzzDiv'>"
+            else:
+                buzz_text += "<div style='position: fixed; bottom: -300px;' class='buzzDiv'>"
+            buzz_text += buzz
+            buzz_text += "</div>"
+            slide_text += buzz_text
+            #print(buzz_text)
+        
         #for img in imgs:
         #    slide_text += ("<img width='100%' src='" + img + "'/>")
         
         slide_text += "</div>"
+        log.info(slide_text)
         return slide_text
         
     def save_file(self, text, filename):
@@ -194,6 +213,16 @@ class ImpressCreator(object):
 
 .mediumText {
     font-size: 65px;
+}
+
+.buzzDiv {
+    font-size: 10px;
+    left: -300px;
+    width: 200px;
+}
+
+.buzzDiv : hover {
+    font-size: 35px;
 }
 """
         
