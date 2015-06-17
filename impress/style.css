@@ -1,0 +1,13 @@
+.present .rand_rotate {
+-webkit-transform: rotate(10deg);
+-moz-transform:    rotate(10deg);
+-ms-transform:    rotate(10deg);
+-o-transform:    rotate(10deg);
+transform:         rotate(10deg);
+display: inline-block;
+-webkit-transition: 0.93s;
+-moz-transition:    0.93s;
+-ms-transition:     0.93s;
+-o-transition:      0.93s;
+transition:         0.93s;
+}
