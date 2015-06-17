@@ -15,6 +15,7 @@ myApp.controller('myController', function($scope) {
 
     $scope.apply = function() {
         alert("generating your slides ......")
+        alert('slides are '+ JSON.stringify($scope.slides))
     }
 
 
