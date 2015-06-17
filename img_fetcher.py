@@ -9,6 +9,7 @@ import threading
 import shutil
 
 import logging
+import random
 
 log = logging.getLogger("img_fetcher")
 
@@ -37,6 +38,10 @@ def create_image_folder():
     os.mkdir('images')
 
 def get_pics(words):
+    pics = list(_get_pics(words))
+    return pics
+
+def _get_pics(words):
    
     
     create_image_folder()
@@ -71,4 +76,4 @@ def get_pics(words):
     
 if __name__ == '__main__':
     delete_image_folder()    
-    print(list(get_pics("% minutes and you are done")))
+    print(get_pics("% minutes and you are done"))
