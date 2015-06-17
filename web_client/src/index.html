@@ -11,13 +11,15 @@
 <h1>slideomatic</h1>
 <h2>enter your input</h2>
                       <div ng-repeat="s in slides" style="border:1px solid black">
-                          <h3>slide #{{s.num}}</h3>
+                          <h3>slide #{{slides.indexOf(s) +1 }}</h3>
                           title:   <input width="100%" ng_model = "s.title"/>
                           <div >
                               <br>
                           content: <textarea rows="5" cols="50" ng-model = "s.content"></textarea>
                           <button ng-click="add_slide()">add slide</button>
-                              </div>
+                              <button ng-click="remove_slide(slides.indexOf(s))">X</button>
+
+                          </div>
                       </div>
 
 
