@@ -28,6 +28,15 @@ class ImpressCreator(object):
                 continue
             self.params_used.append({"x": x, "y": y, "scale": scale, "rotate": rotate})
             return [x, y, scale, rotate]
+            
+    def process_text(self, text):
+        words = text.split(" ")
+        words = ["<span class='rand_rotate'>" + word + "</span>" if random.randint(0, 4) == 1 else word for word in words]
+        #for word in words:
+        #    if random.randint(0, 4) == 1:
+        #        word = "<span class='rand_rotate'>" + word + "</span>"
+        text = " ".join(words)
+        return text
 
     def create_slide(self, desc, i):
         slide_text = ""
@@ -35,7 +44,7 @@ class ImpressCreator(object):
         
         opening_div = "<div class='step' data-x='%d' data-y='%d' data-scale='%d' data-rotate='%d'>" % (x, y, scale, rotate)
         slide_text += opening_div
-        slide_text += desc.get("text")
+        slide_text += self.process_text(desc.get("text"))
         
         imgs = desc.get("img_list")
         for img in imgs:
@@ -67,6 +76,39 @@ class ImpressCreator(object):
             
             #print(page)
             #print(self.params_used)
+            
+    def create_css(self):
+        rotate = 7 * (random.randint(-3, 4) + 0.5)
+        transition = random.uniform(0, 2)
+        css_text = ""
+        css_text += ".present .rand_rotate {"
+        css_text += "\n"
+        css_text += ("-webkit-transform: rotate(%ddeg);" % rotate)
+        css_text += "\n"
+        css_text += ("-moz-transform:    rotate(%ddeg);" % rotate)
+        css_text += "\n"
+        css_text += ("-ms-transform:    rotate(%ddeg);" % rotate)
+        css_text += "\n"
+        css_text += ("-o-transform:    rotate(%ddeg);" % rotate)
+        css_text += "\n"
+        css_text += ("transform:         rotate(%ddeg);" % rotate)
+        css_text += "\n"
+        css_text += "display: inline-block;"
+        css_text += "\n"
+        css_text += ("-webkit-transition: %.2fs;" % transition)
+        css_text += "\n"
+        css_text += ("-moz-transition:    %.2fs;" % transition)
+        css_text += "\n"
+        css_text += ("-ms-transition:     %.2fs;" % transition)
+        css_text += "\n"
+        css_text += ("-o-transition:      %.2fs;" % transition)
+        css_text += "\n"
+        css_text += ("transition:         %.2fs;" % transition)
+        css_text += "\n"
+        css_text += "}"
+        css_text += "\n"
+        
+        self.save_file(css_text, "style.css")
 
 if __name__ == "__main__":
     descs = [
@@ -77,4 +119,5 @@ if __name__ == "__main__":
     
     ic = ImpressCreator()
     ic.create_presentation(descs)
+    ic.create_css()
     
