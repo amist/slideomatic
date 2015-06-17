@@ -6,24 +6,16 @@ Created on Jun 17, 2015
 import core
 from core import BACKENDS
 import logging
-
-def inp_m(s):
-    lines = [inp(s)]
-    line = '*'
-    while line:
-        line = input("more:\n")
-        lines.append(line)
         
-    return "\n".join(lines[:-1])
-        
-
+def save(a):
+    with open('lastrun', 'a') as f:
+        f.write(a+"\n")
+       
 def inp(s):
     a = ''
     while not a.strip():
         a = input(s)
-        with open('lastrun', 'a') as f:
-            f.write(a+"\n")
-       
+        save(a)
         
     return a.strip()
 
@@ -42,13 +34,15 @@ def main():
         line = '*'
         while 1:
             line = input("more:\n")
+            save(line)
             if not line: break
             para += '\n' + line
     
         paragraphs.append(para)
     backend = ''
-    while backend not in BACKENDS:
-        backend = inp("Backend [%s]:\n"% ", ".join(BACKENDS.keys()))
+#     while backend not in BACKENDS:
+#         backend = inpu("Backend [%s]:\n"% ", ".join(BACKENDS.keys()))
+    backend = 'impress'
         
     core.generate(title, author, paragraphs, backend)
     print ("Woo hooy!")
