@@ -37,7 +37,7 @@ def create_image_folder():
     os.mkdir('images')
 
 def get_pics(words):
-    global NUMBER
+   
     
     create_image_folder()
     words = quote(words)
@@ -71,4 +71,4 @@ def get_pics(words):
     
 if __name__ == '__main__':
     delete_image_folder()    
-    print(list(get_pics("Easy as Cheese")))
+    print(list(get_pics("% minutes and you are done")))
