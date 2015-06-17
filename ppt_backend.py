@@ -16,7 +16,7 @@
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
-
+import math
 
 
 def add_title_slide(prs, title_dict):
@@ -64,35 +64,60 @@ def add_contact_slide(prs, contact_dict):
         p = tf.add_paragraph()
         p.text = contact_dict["phone"]
 
-def add_text_slide(prs, slide_dict):
-    blank_slide_layout = prs.slide_layouts[6]
-    slide = prs.slides.add_slide(blank_slide_layout)
+def add_text_in_slide(slide, slide_dict):
+    '''
+    this function get as input the presentation and slide_dict that includes the following relevant key:
+    text - the text to be added
+    '''
+    #blank_slide_layout = prs.slide_layouts[6]
+    #slide = prs.slides.add_slide(blank_slide_layout)
     #position of the text-box
+    number_of_lines = slide_dict["text"].count('\n') + 2
+    text_lines = slide_dict["text"].split('\n')
+    max_len = 0
+    for line in text_lines:
+        if len(line) > max_len:
+            max_len = len(line)
+
     left = top = Inches(1)
-    width = height = Inches(5)
+    width = Inches(math.ceil(max_len / 6.0))          #6 characters in size 32 for an inche
+    height = Inches(math.ceil(number_of_lines / 2)) #2 lines for an inche
+    print number_of_lines, width, height
     txBox = slide.shapes.add_textbox(left, top, width, height)
     tf = txBox.text_frame
-    tf.text = slide_dict["text"]
+    #tf.text = slide_dict["text"]
+    p = tf.add_paragraph()
+    p.text = slide_dict["text"]
+    p.font.size = Pt(32)
 
 
-def make_presentation():
-    title_dict = {"title":"Go Go Slide-O-Matic",
-                    "author":"Slide-O-Matic Team",
-                    }#"image":"title_img.jpg"}
+def parsing_and_create_slides(prs, data_list):
+    '''
+    this function get the presentation and list of:
+    {'text': "some_text", 'img_list':'img_list}
+    '''
+    for slide_dict in data_list:
+        blank_slide_layout = prs.slide_layouts[6]
+        slide = prs.slides.add_slide(blank_slide_layout)
+        add_text_in_slide(slide, slide_dict)
 
-    contact_dict = {"name": "The marvelous Team\nTest",
-                    "phone": "10-9",
-                    "email": "marvelous@marvel.com"}
-    slide1 = {"text": "* yair fodor\n* is one of the best\n* fuzball legs up player ever\n"}
+def make_presentation(title_dict, data_list):
+    #title_dict = {"title":"Go Go Slide-O-Matic", "author":"Slide-O-Matic Team", }#"image":"title_img.jpg"}
+
+    #contact_dict = {"name": "The marvelous Team\nTest",  "phone": "10-9", "email": "marvelous@marvel.com"}
+
     prs = Presentation()
 
     add_title_slide(prs, title_dict)
-    add_text_slide(prs, slide1)
+    parsing_and_create_slides(prs, data_list)
+    #add_text_slide(prs, slide1)
     #add_contact_slide(prs, contact_dict)
+
     prs.save('test.pptx')
 
 if __name__ == '__main__':
-    make_presentation({"first": {'title': 'Some Title', 'author': 'Yoav Glazner',
-                                 }
-                       
-                       })
+    title_dict = {"title":"Go Go Slide-O-Matic", "author":"Slide-O-Matic Team", }#"image":"title_img.jpg"}
+    slide1 = {"text": "* yair fodor\n* is one of the best\n* fuzball legs up player ever"}
+    slide2 = {"text": "* alon shaltiel - go to sleep please..."}
+    make_presentation(title_dict, [slide1, slide2])
+
