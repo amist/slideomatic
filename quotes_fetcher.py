@@ -54,6 +54,8 @@ class QuotesFetcher(object):
 
 
 def fetch_quote(sentence):
+    if len(sentence) == 0:
+        return ""
     qf = QuotesFetcher()
     qs = qf.fetch_quotes_out_of_sentence(sentence)
     return qf.pick_one_quote(qs)
