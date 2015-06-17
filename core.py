@@ -6,6 +6,7 @@ Created on Jun 17, 2015
 #import ppt_backend
 from img_fetcher import get_pics, delete_image_folder
 import logging
+import wiki_sentence_generator
 
 log = logging.getLogger("core")
 
@@ -28,13 +29,16 @@ def generate(title, author, paragraghs, backend='pttx'):
             'slides': slides
             
             }
+    
+    
     for para in paragraghs:
+        buzz = wiki_sentence_generator.random_wiki_sentence(para)
         imgs = get_pics(para.replace('\n', ' '))
         slides.append({
                        "text": para,
                        "images": imgs,
-                       "qoute": None,
-                       "buzz": None,
+                       "quote": None,
+                       "buzz": buzz,
                        })
     log.debug("sending %s to %s" % (data, backend))
     backend(data)
