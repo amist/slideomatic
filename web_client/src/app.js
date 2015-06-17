@@ -1,8 +1,9 @@
 var myApp = angular.module('myApp', [])
 myApp.controller('myController', function($scope) {
     var slide =  function(){
-        this.title = '';
-    this.content = ''}
+            this.content = ''}
+
+    $scope.title = ""
 
     $scope.slides = [new slide()]  ;
 
