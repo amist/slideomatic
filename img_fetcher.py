@@ -58,8 +58,6 @@ def _get_image(r):
         
 
 def _get_pics(words):
-   
-    
     create_image_folder()
     words = quote(words)
     url = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q={}".format(words)
