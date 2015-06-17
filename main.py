@@ -33,7 +33,7 @@ def main():
             break
         line = '*'
         while 1:
-            line = input("more:\n")
+            line = input("")
             save(line)
             if not line: break
             para += '\n' + line
