@@ -18,17 +18,6 @@ from pptx import Presentation
 from pptx.util import Inches, Pt
 import urllib2
 
-def download_title_img(img_url, img_name):
-    '''
-
-    '''
-    imgRequest = urllib2.Request(img_url, headers={'User-Agent' :'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'})
-    imgData = urllib2.urlopen(imgRequest).read()
-
-    f = open(img_name,'wb')
-    f.write(imgData)
-    f.close()
-
 
 def add_title_slide(prs, title_dict):
     '''
