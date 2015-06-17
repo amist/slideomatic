@@ -120,7 +120,7 @@ class ImpressCreator(object):
         slide_text += self.process_text(desc.get("text"))
         slide_text += "</div>"
         
-        print(desc)
+        #print(desc)
         if buzz is not None and buzz != "":
             buzz_text = ""
             if text_up:
