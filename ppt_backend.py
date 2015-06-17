@@ -16,7 +16,7 @@
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
-import urllib2
+
 
 
 def add_title_slide(prs, title_dict):
@@ -91,4 +91,8 @@ def make_presentation():
     #add_contact_slide(prs, contact_dict)
     prs.save('test.pptx')
 
-make_presentation()
+if __name__ == '__main__':
+    make_presentation({"first": {'title': 'Some Title', 'author': 'Yoav Glazner',
+                                 }
+                       
+                       })
