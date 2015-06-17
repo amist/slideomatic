@@ -6,17 +6,20 @@ Created on Jun 17, 2015
 import core
 from core import BACKENDS
 import logging
-
+        
+def save(a):
+    with open('lastrun', 'a') as f:
+        f.write(a+"\n")
+       
 def inp(s):
     a = ''
     while not a.strip():
         a = input(s)
-        with open('lastrun', 'a') as f:
-            f.write(a+"\n")
+        save(a)
+        
     return a.strip()
 
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+def main():
     print("Welcome!\n")
     with open('lastrun' ,'wb'): 
         pass
@@ -28,10 +31,24 @@ if __name__ == '__main__':
         para = inp("Insert text for slide %d(q to quit):"%i)
         if para.strip() in 'qQ':
             break
+        line = '*'
+        while 1:
+            line = input("")
+            save(line)
+            if not line: break
+            para += '\n' + line
+    
         paragraphs.append(para)
     backend = ''
-    while backend not in BACKENDS:
-        backend = inp("Backend [%s]:\n"% ", ".join(BACKENDS.keys()))
+#     while backend not in BACKENDS:
+#         backend = inpu("Backend [%s]:\n"% ", ".join(BACKENDS.keys()))
+    backend = 'impress'
         
     core.generate(title, author, paragraphs, backend)
-    print ("Woo hoo!")
+    print ("Woo hooy!")
+    
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    main()
+    
+    

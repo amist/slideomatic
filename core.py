@@ -36,7 +36,7 @@ def generate(title, author, paragraghs, backend='pttx'):
     
     for para in paragraghs:
         buzz = wiki_sentence_generator.random_wiki_sentence(para)
-        quote = fetch_quote(para)
+        quote = ""#fetch_quote(para)
         imgs = get_pics(para.replace('\n', ' '))
         slides.append({
                        "text": para,
