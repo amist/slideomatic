@@ -12,7 +12,7 @@ def inp(s):
     while not a.strip():
         a = input(s)
         with open('lastrun', 'a') as f:
-            f.write(a)
+            f.write(a+"\n")
     return a.strip()
 
 if __name__ == '__main__':

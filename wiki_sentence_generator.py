@@ -55,7 +55,7 @@ def random_wiki_sentence(phrase):
     #        return i
     log.debug("\n\nsumm=%s\n\n", summ)
     
-    return random.choice(summ)
+    return random.choice(summ or [''])
 
 if __name__ == '__main__':
     logging.basicConfig(level=0)
