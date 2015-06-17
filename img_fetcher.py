@@ -7,7 +7,7 @@ from pprint import pprint
 import os
 import threading
 import shutil
-
+from concurrent.futures import ThreadPoolExecutor
 import logging
 import random
 
@@ -41,6 +41,22 @@ def get_pics(words):
     pics = list(_get_pics(words))
     return pics
 
+def _get_image(r):
+    number = get_number()
+    url = r['url']
+    extension = url[-3:].lower()
+    if extension not in ('gif', 'jpg', 'png'):
+        return
+    try:
+        img = download(url)
+        path = "images/image_%d.%s" % (number, extension)
+        with open(path, 'wb') as f: 
+            f.write(img)
+        return path
+    except urllib.error.URLError:
+        log.exception("url %s failed"% url)
+        
+
 def _get_pics(words):
    
     
@@ -55,21 +71,10 @@ def _get_pics(words):
                         
     if j.get('responseData') and j['responseData'].get('results'):
         results = j['responseData']['results']
-        for r in results:
-            number = get_number()
-            url = r['url']
-            extension = url[-3:].lower()
-            if extension not in ('gif', 'jpg', 'png'):
-                continue
-            try:
-                img = download(url)
-                path = "images/image_%d.%s" % (number, extension)
-                with open(path, 'wb') as f: 
-                    f.write(img)
-                yield path
-            except urllib.error.URLError:
-                log.exception("url %s failed"% url)
-                
+        with ThreadPoolExecutor(max_workers=5) as tpe:
+            for img in tpe.map(_get_image, results):
+                if img: 
+                    yield img
         
     
     
