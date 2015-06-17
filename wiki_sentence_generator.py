@@ -59,4 +59,4 @@ def random_wiki_sentence(phrase):
 
 if __name__ == '__main__':
     logging.basicConfig(level=0)
-    print(random_wiki_sentence('chameleon is an obfuscagting compiler'))
+    #print(random_wiki_sentence('chameleon is an obfuscagting compiler'))
