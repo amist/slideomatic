@@ -76,4 +76,4 @@ def _get_pics(words):
     
 if __name__ == '__main__':
     delete_image_folder()    
-    print(get_pics("% minutes and you are done"))
+    print(get_pics("mpeg4 layer are awesome"))
