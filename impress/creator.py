@@ -46,8 +46,11 @@ class ImpressCreator(object):
         slide_text = ""
         opening_div = "<div class='step' data-x='0' data-y='0' data-scale='1' data-rotate='0'>"
         slide_text += opening_div
-        slide_text += "<h1>" + desc['title'] + "</h1>"
-        slide_text += "<h4>" + desc['author'] + "</h4>"
+        slide_text += "<div style='position: fixed; top: -200px; left: 0'>"
+        slide_text += "<div class='bigText'>" + desc['title'] + "</div>"
+        slide_text += "<div>" + desc['author'] + "</div>"
+        slide_text += "</div>"
+        slide_text += ("<img style='max-height: 400px; max-width: 700px; position: fixed; top: 0; left: 400px;' src='" + desc['image'] + "'/>")
         slide_text += "</div>"
         self.params_used.append({"x": 0, "y": 0, "scale": 1, "rotate": 0})
         return slide_text
@@ -85,7 +88,7 @@ class ImpressCreator(object):
                 if i == 1 and left_before_right or i == 0 and not left_before_right:
                     l = 45 + random.randint(1, 15)
             i += 1
-            img_tag = ("<img width='%d%%' style='position: fixed; top: %d%%; left: %d%%;' src='" + img + "'/>") % (img_width, t, l)
+            img_tag = ("<img style='max-height: 400px; max-width: %d%%; position: fixed; top: %d%%; left: %d%%;' src='" + img + "'/>") % (img_width, t, l)
             imgs_text += img_tag
             img_width /= 1.5
             if img_width < 20:
@@ -105,9 +108,9 @@ class ImpressCreator(object):
         slide_text += self.create_img_elements(imgs, text_up)
         
         if text_up:
-            slide_text += "<div style='position: fixed; top: -200px; left: 0px;'>"
+            slide_text += "<div class='textDiv' style='position: fixed; top: -200px; left: 0px;'>"
         else:
-            slide_text += "<div style='position: fixed; top: 200px; left: 0px;'>"
+            slide_text += "<div class='textDiv' style='position: fixed; top: 200px; left: 0px;'>"
         slide_text += self.process_text(desc.get("text"))
         slide_text += "</div>"
         
@@ -180,7 +183,20 @@ class ImpressCreator(object):
         css_text += ("transition:         %.2fs;" % transition)
         css_text += "\n"
         css_text += "}"
-        css_text += "\n"
+        css_text += """\n
+.textDiv b {
+    display: block;
+}
+
+.bigText {
+    font-size: 100px;
+}
+
+.mediumText {
+    font-size: 65px;
+}
+"""
+        
         
         self.save_file(css_text, "style.css")
         
