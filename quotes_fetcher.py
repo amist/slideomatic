@@ -21,18 +21,15 @@ def fetch_quotes_out_of_subject(subject):
     
 def fetch_quotes_out_of_sentence(sentence):
     words = sentence.split(" ")
-    #longest_word = max(words, key=len)
     words.sort(key = lambda s: -len(s))
     index = 0
     if len(words) > 1:
         index = random.randint(0, 1)
     subject = words[index]
-    #subject = longest_word
-    #subject = "failure"
-    #subject = "nature"
-    #subject = "parents"
+    
     print("Using the subject: %s" % subject)
     qs = fetch_quotes_out_of_subject(subject)
+    
     if len(qs) == 0:
         if index == 0 and len(words > 1):
             index = 1
@@ -41,7 +38,17 @@ def fetch_quotes_out_of_sentence(sentence):
         subject = words[index]
         print("Using the subject: %s" % subject)
         qs = fetch_quotes_out_of_subject(subject)
+        
+    if (len(qs) == 0):
+        qs = [""]
     return qs
+    
+def pick_one_quote(qs):
+    qs.sort(key = lambda s: (len(s) + random.randint(30, 80)))
+    #for q in qs:
+    #    print("---")
+    #    print(q)
+    return qs[0]
     
 def print_quotes(qs):
     for q in qs:
@@ -53,4 +60,6 @@ def print_quotes(qs):
 if __name__ == "__main__":
     sentence = "How to learn from your mistakes"
     qs = fetch_quotes_out_of_sentence(sentence)
-    print_quotes(qs)
+    q = pick_one_quote(qs)
+    print(q)
+    #print_quotes(qs)
