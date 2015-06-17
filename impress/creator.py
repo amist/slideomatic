@@ -41,6 +41,15 @@ class ImpressCreator(object):
         #        word = "<span class='rand_rotate'>" + word + "</span>"
         text = " ".join(words)
         return text
+        
+    def create_first_page(self, desc):
+        slide_text = ""
+        opening_div = "<div class='step' data-x='0' data-y='0' data-scale='1' data-rotate='0'>"
+        slide_text += opening_div
+        slide_text += "<h1>" + desc['title'] + "</h1>"
+        slide_text += "<h4>" + desc['author'] + "</h4>"
+        slide_text += "</div>"
+        return slide_text
 
     def create_slide(self, desc, i):
         slide_text = ""
@@ -72,7 +81,12 @@ class ImpressCreator(object):
             page_template = "".join(page_template)
             
             slides_text = ""
-            i = 0
+            
+            first_page = self.create_first_page(data['first'])
+            slides_text += first_page
+            slides_text += "\n"
+            
+            i = 1
             for desc in descs:
                 cur_slide = self.create_slide(desc, i)
                 slides_text += cur_slide
@@ -130,8 +144,13 @@ if __name__ == "__main__":
         {"text": "my second slide", "images": ["b.jpg"]},
         {"text": "my third slide", "images": ["c.jpg"]},
         {"text": "my fourth slide", "images": ["d.jpg"]}]
+    
+    first = {'title': 'My Title', 'image': 'a.jpg', 'author': 'John Smith'}
         
-    data = {'slides': descs}
+    data = {
+        'slides': descs,
+        'first': first
+        }
     
     ic = ImpressCreator()
     ic.create_presentation(data)
