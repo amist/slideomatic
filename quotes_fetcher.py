@@ -15,19 +15,11 @@ def fetch_quotes_from_quotationspage(subject):
         #print(q)
     return qs
 
-def fetch_quotes(subject):
+def fetch_quotes_out_of_subject(subject):
     qs = fetch_quotes_from_quotationspage(subject)
     return qs
     
-def print_quotes(qs):
-    for q in qs:
-        try:
-            print(q)
-        except UnicodeEncodeError:
-            print("<<< QUOTE WITH UnicodeEncodeError >>>")
-
-if __name__ == "__main__":
-    sentence = "How to learn from your mistakes"
+def fetch_quotes_out_of_sentence(sentence):
     words = sentence.split(" ")
     #longest_word = max(words, key=len)
     words.sort(key = lambda s: -len(s))
@@ -40,7 +32,7 @@ if __name__ == "__main__":
     #subject = "nature"
     #subject = "parents"
     print("Using the subject: %s" % subject)
-    qs = fetch_quotes(subject)
+    qs = fetch_quotes_out_of_subject(subject)
     if len(qs) == 0:
         if index == 0 and len(words > 1):
             index = 1
@@ -48,5 +40,17 @@ if __name__ == "__main__":
             index = 0
         subject = words[index]
         print("Using the subject: %s" % subject)
-        qs = fetch_quotes(subject)
+        qs = fetch_quotes_out_of_subject(subject)
+    return qs
+    
+def print_quotes(qs):
+    for q in qs:
+        try:
+            print(q)
+        except UnicodeEncodeError:
+            print("<<< QUOTE WITH UnicodeEncodeError >>>")
+
+if __name__ == "__main__":
+    sentence = "How to learn from your mistakes"
+    qs = fetch_quotes_out_of_sentence(sentence)
     print_quotes(qs)
