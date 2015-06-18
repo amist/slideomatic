@@ -7,15 +7,15 @@ Created on Jun 17, 2015
 from img_fetcher import get_pics, delete_image_folder
 import impress.creator
 import logging
-import wiki_sentence_generator
+#import wiki_sentence_generator
 from quotes_fetcher import fetch_quote
-from ppt_backend import make_presentation
+#from ppt_backend import make_presentation
 from wiki_sentence_generator import random_wiki_sentence
 
 log = logging.getLogger("core")
 
 BACKENDS = {
-            'pttx': make_presentation,
+            #'pttx': make_presentation,
             'impress': impress.creator.generate
             }
 

@@ -147,7 +147,7 @@ class ImpressCreator(object):
         return slide_text
         
     def save_file(self, text, filename):
-        with open(filename, "w") as text_file:
+        with open(filename, "w", encoding='utf8') as text_file:
             text_file.write(text)
         
     def create_presentation(self, data):
