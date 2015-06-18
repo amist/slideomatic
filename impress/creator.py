@@ -61,6 +61,7 @@ class ImpressCreator(object):
         return slide_text
         
     def create_img_elements(self, imgs, text_up):
+        if not imgs: return ""
         imgs_text = ""
         max_imgs_num = random.randint(2, 3)
         imgs_num = min(len(imgs), max_imgs_num)

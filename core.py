@@ -10,6 +10,7 @@ import logging
 import wiki_sentence_generator
 from quotes_fetcher import fetch_quote
 from ppt_backend import make_presentation
+from wiki_sentence_generator import random_wiki_sentence
 
 log = logging.getLogger("core")
 
@@ -36,7 +37,9 @@ def generate(title, author, paragraghs, backend='pttx'):
     
     
     for para in paragraghs:
-        #buzz = wiki_sentence_generator.random_wiki_sentence(para)
+        
+        if para.startswith('WIKI:'):
+            para = random_wiki_sentence(para[5:])
         buzz = ""
         quote = ""#fetch_quote(para)
         imgs = get_pics(para.replace('\n', ' '))

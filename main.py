@@ -28,15 +28,18 @@ def main():
     author = inp("Author:\n")
     paragraphs = []
     for i in range(1, 2000):
-        para = inp("Insert text for slide %d(q to quit):"%i)
+        para = inp("Insert text for slide %d(w=wikipedia, q=quit):"%i)
         if para.strip() in 'qQ':
             break
-        line = '*'
-        while 1:
-            line = input("")
-            save(line)
-            if not line: break
-            para += '\n' + line
+        elif para.strip() in 'wW':
+            para = "WIKI:"+inp("Wiki subject:")
+        else:
+            line = '*'
+            while 1:
+                line = input("")
+                save(line)
+                if not line: break
+                para += '\n' + line
     
         paragraphs.append(para)
     backend = ''
