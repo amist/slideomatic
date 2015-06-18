@@ -17,14 +17,18 @@ def index():
 
 @app.post('/slides_data')
 def create_slides():
+    log.info("in create slide")
+    log.info("json data %s", request.json)
  
     data = request.json
-    log.info ("data : %s", data) 
+    log.info ("data : %s", data)
     if not data:
         return json.dumps({'Status':"Failed!"})
     else:
-        core.generate(data.title, data.author, data.paragraphs, data.backend)
-    return json.dumps({'Status':"Success!"})
+        data = json.loads(data)
+        core.generate(data['title'], data['author'], data['paragraphs'], data['backend'])
+        log.info("done")
+        return json.dumps({'Status':"Success!"})
 
 
 @app.route('/<path:path>')

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html ng-app ="myApp">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">-->
 
 <Script Type="Text/Javascript" src="../lib/angular.js"></Script>
 <Script Type="Text/Javascript" src="app.js"></Script>
@@ -32,7 +32,9 @@
                            <div  class  ="row">
                               <br>
                            <textarea rows="5" cols="50" ng-model = "s.content"></textarea>
-                              <button  type="button" class="btn btn-default" ng-click="remove_slide(slides.indexOf(s))">X</button>
+                               <input type="checkbox" name="wiki" ng-model="s.wiki">wiki content<br>
+
+                               <button  type="button" class="btn btn-default" ng-click="remove_slide(slides.indexOf(s))">X</button>
 
                           </div>
                       </div>

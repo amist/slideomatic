@@ -1,13 +1,14 @@
 var myApp = angular.module('myApp', [])
 myApp.controller('myController', function($scope) {
     var slide =  function(){
-            this.content = ''}
+            this.content = ''
+    this.wiki=false}
 
     $scope.title = ""
 
     $scope.author = ""
 
-    $scope.backend = ""
+    $scope.backend = "impress"
 
     $scope.slides = [new slide()]  ;
 
@@ -25,23 +26,35 @@ myApp.controller('myController', function($scope) {
 
     $scope.apply = function() {
         var paragraphs = []
-         for (s in $scope.slides) {
-             paragraphs.push(s.content)
+        var slides = $scope.slides
+        for (index = 0; index < slides.length; ++index) {
+             var content = ""
+             if (slides[index].wiki == true) { content = "WIKI:"}
+             content += slides[index].content
+             paragraphs.push(content)
          }
 
-        $.post(
-            "slides_data",
-            JSON.stringify(
-                {"tile": $scope.title, "author": $scope.author,
-                "paragraphs" : paragraphs, "backend": $scope.slides}),
-            function (ret_data, st) {
-                $.each(ret_data, function (index, value) {
-                    alert("index: " + index + " , value: " + value);
-                });
-                alert("Server return status : " + st);
-            },
-            'json'
-        );
+        var slides =  {"title": $scope.title, "author": $scope.author,
+                    "paragraphs" : paragraphs, "backend": $scope.backend}
+
+        slides = JSON.stringify(slides)
+        //alert ("request data "+ slides)
+        $.ajax({
+            url: '/slides_data',
+            type: 'post',
+            data: JSON.stringify(slides, null, '\t'),
+            contentType: 'application/json;charset=UTF-8',
+
+            success: function (data) {
+                alert("success!!!!!");
+                //window.open('file:///C:/hackit/slideomatic/slides.html#/step-1');
+                //window.location.href=”login.jsp?backurl=”+window.location.href;gi
+
+            }
+
+        });
+
+
     }
 
 
