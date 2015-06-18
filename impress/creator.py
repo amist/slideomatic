@@ -49,6 +49,7 @@ class ImpressCreator(object):
         
     def create_first_page(self, desc):
         slide_text = ""
+        
         opening_div = "<div class='step' data-x='0' data-y='0' data-scale='1' data-rotate='0'>"
         slide_text += opening_div
         slide_text += "<div style='position: fixed; top: -200px; left: 0'>"
@@ -60,7 +61,7 @@ class ImpressCreator(object):
         self.params_used.append({"x": 0, "y": 0, "scale": 1, "rotate": 0})
         return slide_text
         
-    def create_img_elements(self, imgs, text_up):
+    def create_img_elements(self, imgs, text_up, text_factor):
         if not imgs: return ""
         imgs_text = ""
         max_imgs_num = random.randint(2, 3)
@@ -76,11 +77,13 @@ class ImpressCreator(object):
             l = 0
             if i >= imgs_num:
                 break
-            upper_bound = max(int(300 - 100 * img_width / 25), 1)
+            line_hight = 20
+#             upper_bound = max(int(300 - 100 * img_width / 25) - text_factor * line_hight), 1)
+            text_fix = text_factor * line_hight
             if text_up:
-                t = random.randint(0, 100)
+                t = random.randint(0, 100) + text_fix
             else:
-                t = random.randint(-400, -200)
+                t = random.randint( -400, -200) - text_fix
             if imgs_num == 1 or imgs_num == 3:
                 if i == 0:
                     l = 10
@@ -108,17 +111,20 @@ class ImpressCreator(object):
         
         opening_div = "<div class='step' data-x='%d' data-y='%d' data-scale='%d' data-rotate='%d'>" % (x, y, scale, rotate)
         slide_text += opening_div
-        
+        text = desc.get("text")
         imgs = desc.get("images")
         text_up = random.randint(0, 2) == 0
         #print("text up" if text_up else "text down")
-        slide_text += self.create_img_elements(imgs, text_up)
+        slide_text += self.create_img_elements(imgs, text_up, text_factor= len(text.splitlines()))
         
+        factor = len(text)
+        scale = int((1 if factor <= 150 else (150 / factor))*100)
+        fontsize = "font-size: {}%;".format(scale)
         if text_up:
-            slide_text += "<div class='textDiv' style='position: fixed; top: -200px; left: 0px;'>"
+            slide_text += "<div class='textDiv' style='position: fixed; top: -200px; left: 0px;%s'>" % fontsize
         else:
-            slide_text += "<div class='textDiv' style='position: fixed; top: 200px; left: 0px;'>"
-        slide_text += self.process_text(desc.get("text"))
+            slide_text += "<div class='textDiv' style='position: fixed; top: 200px; left: 0px;%s'>" % fontsize
+        slide_text += self.process_text(text)
         slide_text += "</div>"
         
         #print(desc)
