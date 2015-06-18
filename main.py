@@ -40,8 +40,8 @@ def main():
     
         paragraphs.append(para)
     backend = ''
-#     while backend not in BACKENDS:
-#         backend = inpu("Backend [%s]:\n"% ", ".join(BACKENDS.keys()))
+    #while backend not in BACKENDS:
+    #    backend = inp("Backend [%s]:\n"% ", ".join(BACKENDS.keys()))
     backend = 'impress'
         
     core.generate(title, author, paragraphs, backend)

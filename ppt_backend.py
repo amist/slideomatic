@@ -33,7 +33,7 @@ def add_title_slide(prs, title_dict):
 
     title.text = title_dict["title"]
     subtitle.text = title_dict["author"]
-    if(title_dict.has_key("image")):
+    if("image" in title_dict):
         top = Inches(1)
         left = Inches(3)
         height = Inches(3)
@@ -82,7 +82,7 @@ def add_text_in_slide(slide, slide_dict):
     left = top = Inches(1)
     width = Inches(math.ceil(max_len / 6.0))          #6 characters in size 32 for an inche
     height = Inches(math.ceil(number_of_lines / 2)) #2 lines for an inche
-    print number_of_lines, width, height
+    print (number_of_lines, width, height)
     txBox = slide.shapes.add_textbox(left, top, width, height)
     tf = txBox.text_frame
     #tf.text = slide_dict["text"]
@@ -101,7 +101,9 @@ def parsing_and_create_slides(prs, data_list):
         slide = prs.slides.add_slide(blank_slide_layout)
         add_text_in_slide(slide, slide_dict)
 
-def make_presentation(title_dict, data_list):
+def make_presentation(d):
+    
+    title_dict, data_list = d['first'], d['slides']
     #title_dict = {"title":"Go Go Slide-O-Matic", "author":"Slide-O-Matic Team", }#"image":"title_img.jpg"}
 
     #contact_dict = {"name": "The marvelous Team\nTest",  "phone": "10-9", "email": "marvelous@marvel.com"}
@@ -119,5 +121,5 @@ if __name__ == '__main__':
     title_dict = {"title":"Go Go Slide-O-Matic", "author":"Slide-O-Matic Team", }#"image":"title_img.jpg"}
     slide1 = {"text": "* yair fodor\n* is one of the best\n* fuzball legs up player ever"}
     slide2 = {"text": "* alon shaltiel - go to sleep please..."}
-    make_presentation(title_dict, [slide1, slide2])
+    make_presentation({'first': title_dict, 'slides': [slide1, slide2]})
 

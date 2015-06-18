@@ -9,11 +9,12 @@ import impress.creator
 import logging
 import wiki_sentence_generator
 from quotes_fetcher import fetch_quote
+from ppt_backend import make_presentation
 
 log = logging.getLogger("core")
 
 BACKENDS = {
-            'pttx': lambda data: 0,#ppt_backend.make_presentation
+            'pttx': make_presentation,
             'impress': impress.creator.generate
             }
 
