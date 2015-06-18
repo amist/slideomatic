@@ -3,8 +3,9 @@ Created on Jun 17, 2015
 
 @author: yglazner
 '''
-from bottle import Bottle, run, static_file, post, request
+from bottle import Bottle, run, static_file, post, request, get
 import os
+import zipfile
 import core
 import json
 import logging
@@ -29,6 +30,26 @@ def create_slides():
         core.generate(data['title'], data['author'], data['paragraphs'], data['backend'])
         log.info("done")
         return json.dumps({'Status':"Success!"})
+
+
+def zip_impress_presentation():
+    zipf = zipfile.ZipFile('my_impress.zip', 'w')
+    zipf.write('slides.html')
+    zipf.write('impress\css\impress-demo.css')
+    zipf.write('impress\js\impress.js')
+    for file in os.listdir("images"):
+       zipf.write(os.path.join('images', file))
+    zipf.close()
+    return "my_impress.zip"
+
+
+@app.get('/my_presentation')
+def get_presentation():
+    download_file = zip_impress_presentation()
+    return static_file(download_file, root='.', download="my_impress.zip")
+
+
+
 
 
 @app.route('/<path:path>')

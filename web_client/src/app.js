@@ -4,6 +4,9 @@ myApp.controller('myController', function($scope) {
             this.content = ''
     this.wiki=false}
 
+    $scope.activityMessage = "";
+    $scope.isLoading = false
+
     $scope.title = ""
 
     $scope.author = ""
@@ -39,6 +42,8 @@ myApp.controller('myController', function($scope) {
 
         slides = JSON.stringify(slides)
         //alert ("request data "+ slides)
+        $scope.activityMessage = "wait while generating slides ....";
+        $scope.isLoading = true
         $.ajax({
             url: '/slides_data',
             type: 'post',
@@ -46,17 +51,50 @@ myApp.controller('myController', function($scope) {
             contentType: 'application/json;charset=UTF-8',
 
             success: function (data) {
-                alert("success!!!!!");
-                //window.open('file:///C:/hackit/slideomatic/slides.html#/step-1');
-                //window.location.href=”login.jsp?backurl=”+window.location.href;gi
+                hideAnimation()
+                $scope.isLoading = false
+                $scope.$apply()
 
+                alert("success!!!!!");
+
+                get_presentation()
             }
 
         });
 
+
+
+
+    }
+
+    var hideAnimation = function()
+    {
+        $scope.activityMessage = '';
+
+    }
+
+    function get_presentation()      {
+        $('#downloadFrame').remove(); // This shouldn't fail if frame doesn't exist
+        $('body').append('<iframe id="downloadFrame" style="display:none"></iframe>');
+        $('#downloadFrame').attr('src','/my_presentation    ');
 
     }
 
 
 
     }   )
+
+myApp.directive('activity', [
+    function () {
+        var template = '<div class="activity-box" > <img src="working.gif" width="200" /><span>{{ message }}</span> </div>'
+        return {
+            restrict: 'EA',
+            template: template,
+            replace: true,
+            scope: {
+                message: '@'
+            },
+            link: function (scope, element, attrs) {}
+        };
+    }
+]);
