@@ -3,9 +3,15 @@ Created on Jun 17, 2015
 
 @author: yglazner
 '''
+import sys;sys.path.insert(0, '.')
 import core
 from core import BACKENDS
 import logging
+import time
+import pack
+import os
+import webbrowser
+
         
 def save(a):
     with open('lastrun', 'a') as f:
@@ -48,9 +54,22 @@ def main():
     backend = 'impress'
         
     core.generate(title, author, paragraphs, backend)
-    print ("Woo hooy!")
+    time.sleep(0.2)
+    title = title.replace(" ", "_") + "_%s" % int(time.time())
+    pack.main(title)
+    print("Yay we are done!")
+    fullpath = os.path.abspath(title)
+    for c in "Your slides are at: %s" % fullpath:
+        print(c, end='')
+        time.sleep(0.1)
+    print()
+    print("Opening default web browser")
+    time.sleep(0.05)
+    webbrowser.open(os.path.join(fullpath, "slides.html"))
+    
     
 if __name__ == '__main__':
+    
     logging.basicConfig(level=logging.DEBUG)
     main()
     
