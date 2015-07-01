@@ -54,7 +54,7 @@ def random_wiki_sentence(phrase):
     for i in summ:        
         if i and random.random() < 0.5:
             return i
-    return summ[0]
+    return summ[0] if summ else "Nothing found on wikipedia for %s" % phrase
 
     #return random.choice(summ)
 
