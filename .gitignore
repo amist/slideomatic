@@ -1,3 +1,6 @@
 *.project
 *.pyc
 __pycache__
+dist
+images
+lastrun
